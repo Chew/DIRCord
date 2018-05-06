@@ -65,6 +65,12 @@ class About
   include Cinch::Plugin
 
   listen_to :channel, method: :send, strip_colors: true
+  listen_to :connect, method: :identify
+
+  def identify(_m)
+    User('NickServ').send("identify #{CONFIG['nickservpass']}") unless CONFIG['nickservpass'].nil? || CONFIG['nickservpass'] == ''
+    Irc.oper(CONFIG['operpass'], CONFIG['operusername']) unless CONFIG['operpass'].nil? || CONFIG['operpass'] == '' || CONFIG['operusername'].nil? || CONFIG['operusername'] == ''
+  end
 
   def send(m)
     channel = m.channel.to_s[1..m.channel.to_s.length]
