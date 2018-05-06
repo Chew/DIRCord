@@ -42,7 +42,7 @@ botuser = if CONFIG['username'].nil? || CONFIG['username'] == ''
           end
 
 botrealname = if CONFIG['realname'].nil? || CONFIG['realname'] == ''
-                'IRCDis'
+                'Proud DIRCord User! http://github.com/Chewsterchew/DIRCord'
               else
                 (CONFIG['realname']).to_s
               end
@@ -66,10 +66,32 @@ class About
 
   listen_to :channel, method: :send, strip_colors: true
   listen_to :connect, method: :identify
+  listen_to :leaving, method: :leave
+  # listen_to :join, method: :join
 
   def identify(_m)
     User('NickServ').send("identify #{CONFIG['nickservpass']}") unless CONFIG['nickservpass'].nil? || CONFIG['nickservpass'] == ''
     Irc.oper(CONFIG['operpass'], CONFIG['operusername']) unless CONFIG['operpass'].nil? || CONFIG['operpass'] == '' || CONFIG['operusername'].nil? || CONFIG['operusername'] == ''
+  end
+
+  # def join(m, user)
+  #  if m.channel?
+  #    channel = m.channel.to_s[1..m.channel.to_s.length]
+  #    chan = Discord.server(CONFIG['server_id']).text_channels.find { |chane| chane.name == channel.downcase }.id
+  #    message = format('*→ %s joined (%s)*', user, user.host)
+  #    Discord.channel(chan).send(message)
+  #  end
+  # end
+
+  def leave(m, user)
+    if m.channel?
+      channel = m.channel.to_s[1..m.channel.to_s.length]
+      chan = Discord.server(CONFIG['server_id']).text_channels.find { |chane| chane.name == channel.downcase }.id
+      message = format('*⇐ %s left (%s)*', user, user.host)
+      Discord.channel(chan).send(message)
+      # else
+      # message = format(' %s (%s) quit.', user, user.host)
+    end
   end
 
   def send(m)
