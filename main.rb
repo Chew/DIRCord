@@ -59,7 +59,7 @@ botserverpass = if CONFIG['serverpass'].nil? || CONFIG['serverpass'] == ''
                   CONFIG['serverpass']
                 end
 
-Discord = Discordrb::Commands::CommandBot.new token: CONFIG['token'], client_id: CONFIG['client_id'], prefix: nil
+Discord = Discordrb::Commands::CommandBot.new token: CONFIG['token'], client_id: CONFIG['client_id'], prefix: '~'
 
 class About
   include Cinch::Plugin
@@ -84,8 +84,18 @@ class About
   end
 end
 
-Discord.message(start_with: '', from: CONFIG['user_id']) do |event|
+Discord.message(start_with: not!('~'), from: CONFIG['user_id']) do |event|
   Irc.Channel("\##{event.channel.name}").send(event.message.content.to_s)
+end
+
+Discord.command(:topic) do |event|
+  modes = []
+  m = Irc.Channel("\##{event.channel.name}")
+  m.modes.each do |e, _f|
+    modes[modes.length] = e
+  end
+  event.channel.topic = "[+#{modes.join('')}] #{m.topic}"
+  event.respond 'Set the channel topic!'
 end
 
 puts 'Initial Startup complete, loading all plugins...'
