@@ -77,6 +77,9 @@ class About
     name = m.user.name
     message = m.message
     chan = Discord.server(CONFIG['server_id']).text_channels.find { |chane| chane.name == channel }.id
+
+    message.gsub!(CONFIG['nickname'], "<@#{CONFIG['user_id']}>")
+
     Discord.channel(chan).send("**<#{name}>** #{message}")
   end
 end
