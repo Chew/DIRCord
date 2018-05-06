@@ -81,7 +81,7 @@ class About
   end
 end
 
-Discord.message(start_with: '') do |event|
+Discord.message(start_with: '', from: CONFIG['user_id']) do |event|
   puts event.message.content.to_s
   Irc.Channel("\##{event.channel.name}").send(event.message.content.to_s)
 end
