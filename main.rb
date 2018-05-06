@@ -64,7 +64,7 @@ Discord = Discordrb::Commands::CommandBot.new token: CONFIG['token'], client_id:
 class About
   include Cinch::Plugin
 
-  listen_to :channel, method: :send, strip_colors: true
+  listen_to :channel, method: :send
   listen_to :connect, method: :identify
   listen_to :leaving, method: :leave
   # listen_to :join, method: :join
@@ -101,6 +101,7 @@ class About
     chan = Discord.server(CONFIG['server_id']).text_channels.find { |chane| chane.name == channel.downcase }.id
 
     message.gsub!(CONFIG['nickname'], "<@#{CONFIG['user_id']}>")
+    message.gsub!(/([0-9]\d{0,2})/, '')
 
     Discord.channel(chan).send("**<#{name}>** #{message}")
   end
@@ -116,7 +117,7 @@ Discord.command(:topic) do |event|
   m.modes.each do |e, _f|
     modes[modes.length] = e
   end
-  event.channel.topic = "[+#{modes.join('')}] #{m.topic}"
+  event.channel.topic = "[+#{modes.join('')}] #{m.topic.gsub!(/([0-9]\d{0,2})/, '')}"
   event.respond 'Set the channel topic!'
 end
 
@@ -151,7 +152,7 @@ Irc = Cinch::Bot.new do
     c.port = botport
     c.user = botuser
     c.realname = botrealname
-    c.messages_per_second = 5
+    c.messages_per_second = 2
     c.ssl.use = botssl
     c.password = botserverpass
 
