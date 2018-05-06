@@ -105,11 +105,11 @@ Discord.ready do |_meme|
 end
 
 Discord.channel_create do |event|
-  Irc.Channel("\##{event.channel.name}").join
+  Irc.Channel("\##{event.channel.name}").join if event.channel.text?
 end
 
 Discord.channel_delete do |event|
-  Irc.Channel("\##{event.name}").part
+  Irc.Channel("\##{event.name}").part if event.type.zero?
 end
 
 puts 'Bot is ready!'
