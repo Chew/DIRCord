@@ -76,7 +76,7 @@ class About
     channel = m.channel.to_s[1..m.channel.to_s.length]
     name = m.user.name
     message = m.message
-    chan = Discord.server(CONFIG['server_id']).text_channels.find { |chane| chane.name == channel }.id
+    chan = Discord.server(CONFIG['server_id']).text_channels.find { |chane| chane.name == channel.downcase }.id
 
     message.gsub!(CONFIG['nickname'], "<@#{CONFIG['user_id']}>")
 
