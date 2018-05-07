@@ -135,6 +135,14 @@ Discord.channel_delete do |event|
   Irc.Channel("\##{event.name}").part if event.type.zero?
 end
 
+Discord.message_edit do |_event|
+  Discord.user(CONFIG['user_id']).pm("Hey, you just edited a message, just wanted to let you know that IRC users don't see the edited message, only the original. Thanks!")
+end
+
+Discord.message_delete do |_event|
+  Discord.user(CONFIG['user_id']).pm('Hey, you just deleted a message, just wanted to let you know that IRC users still see the deleted message. Thanks!')
+end
+
 puts 'Bot is ready!'
 Discord.run :async
 
