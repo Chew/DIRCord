@@ -95,6 +95,7 @@ class About
   end
 
   def send(m)
+    return if Time.now.to_i - STARTTIME.to_i == 10
     channel = m.channel.to_s[1..m.channel.to_s.length]
     name = m.user.name
     message = m.message
@@ -119,6 +120,43 @@ Discord.command(:topic) do |event|
   end
   event.channel.topic = "[+#{modes.join('')}] #{m.topic.gsub!(/([0-9]\d{0,2})/, '')}"
   event.respond 'Set the channel topic!'
+end
+
+Discord.command(:users) do |event|
+  channel = Irc.Channel("\##{event.channel.name}")
+  users = channel.users.keys.join(' ').split(' ')
+  modes = []
+  channel.users.each { |e| modes[modes.length] = e[1] }
+
+  owners = []
+  admins = []
+  ops = []
+  halfops = []
+  voiced = []
+  member = []
+
+  (0..modes.length - 1).each do |i|
+    mod = modes[i]
+    if mod.length.zero?
+      member[member.length] = users[i]
+      next
+    end
+    mod = [mod[0]] if mod.length > 1
+    mod = mod[0]
+    owners[owners.length] = users[i] if mod == 'q'
+    admins[admins.length] = users[i] if mod == 'a'
+    ops[ops.length] = users[i] if mod == 'o'
+    halfops[halfops.length] = users[i] if mod == 'h'
+    voiced[voiced.length] = users[i] if mod == 'v'
+  end
+  output = []
+  output += ['**Owners**', owners.join(', '), ''] unless owners.length.zero?
+  output += ['**Admins**', admins.join(', '), ''] unless admins.length.zero?
+  output += ['**Ops**', ops.join(', '), ''] unless ops.length.zero?
+  output += ['**Halfops**', halfops.join(', '), ''] unless halfops.length.zero?
+  output += ['**Voiced**', voiced.join(', '), ''] unless voiced.length.zero?
+  output += ['**Member**', member.join(', '), ''] unless member.length.zero?
+  event.respond output.join("\n")
 end
 
 puts 'Initial Startup complete, loading all plugins...'
