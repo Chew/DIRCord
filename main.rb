@@ -61,52 +61,8 @@ botserverpass = if CONFIG['serverpass'].nil? || CONFIG['serverpass'] == ''
 
 Discord = Discordrb::Commands::CommandBot.new token: CONFIG['token'], client_id: CONFIG['client_id'], prefix: '~'
 
-class About
-  include Cinch::Plugin
-
-  listen_to :channel, method: :send
-  listen_to :connect, method: :identify
-  listen_to :leaving, method: :leave
-  # listen_to :join, method: :join
-
-  def identify(_m)
-    User('NickServ').send("identify #{CONFIG['nickservpass']}") unless CONFIG['nickservpass'].nil? || CONFIG['nickservpass'] == ''
-    Irc.oper(CONFIG['operpass'], CONFIG['operusername']) unless CONFIG['operpass'].nil? || CONFIG['operpass'] == '' || CONFIG['operusername'].nil? || CONFIG['operusername'] == ''
-  end
-
-  # def join(m, user)
-  #  if m.channel?
-  #    channel = m.channel.to_s[1..m.channel.to_s.length]
-  #    chan = Discord.server(CONFIG['server_id']).text_channels.find { |chane| chane.name == channel.downcase }.id
-  #    message = format('*→ %s joined (%s)*', user, user.host)
-  #    Discord.channel(chan).send(message)
-  #  end
-  # end
-
-  def leave(m, user)
-    if m.channel?
-      channel = m.channel.to_s[1..m.channel.to_s.length]
-      chan = Discord.server(CONFIG['server_id']).text_channels.find { |chane| chane.name == channel.downcase }.id
-      message = format('*⇐ %s left (%s)*', user, user.host)
-      Discord.channel(chan).send(message)
-      # else
-      # message = format(' %s (%s) quit.', user, user.host)
-    end
-  end
-
-  def send(m)
-    return if Time.now.to_i - STARTTIME.to_i == 10
-    channel = m.channel.to_s[1..m.channel.to_s.length]
-    name = m.user.name
-    message = m.message
-    chan = Discord.server(CONFIG['server_id']).text_channels.find { |chane| chane.name == channel.downcase }.id
-
-    message.gsub!(CONFIG['nickname'], "<@#{CONFIG['user_id']}>")
-    message.gsub!(/([0-9]\d{0,2})/, '')
-
-    Discord.channel(chan).send("**<#{name}>** #{message}")
-  end
-end
+# Require each irc plugin
+Dir["#{File.dirname(__FILE__)}/irc/*.rb"].each { |file| require file }
 
 Discord.message(start_with: not!('~'), from: CONFIG['user_id']) do |event|
   Irc.Channel("\##{event.channel.name}").send(event.message.content.to_s)
@@ -149,14 +105,28 @@ Discord.command(:users) do |event|
     halfops[halfops.length] = users[i] if mod == 'h'
     voiced[voiced.length] = users[i] if mod == 'v'
   end
-  output = []
-  output += ['**Owners**', owners.join(', '), ''] unless owners.length.zero?
-  output += ['**Admins**', admins.join(', '), ''] unless admins.length.zero?
-  output += ['**Ops**', ops.join(', '), ''] unless ops.length.zero?
-  output += ['**Halfops**', halfops.join(', '), ''] unless halfops.length.zero?
-  output += ['**Voiced**', voiced.join(', '), ''] unless voiced.length.zero?
-  output += ['**Member**', member.join(', '), ''] unless member.length.zero?
-  event.respond output.join("\n")
+  event.channel.send_embed do |embed|
+    embed.title = "IRC Members in #{event.channel.name}"
+    embed.colour = 0xe7cf31
+
+    embed.add_field(name: '~Owners', value: owners.join(', '), inline: true) unless owners.length.zero?
+    embed.add_field(name: '&Admins', value: admins.join(', '), inline: true) unless admins.length.zero?
+    embed.add_field(name: '@Ops', value: ops.join(', '), inline: true) unless ops.length.zero?
+    embed.add_field(name: '%Halfops', value: halfops.join(', '), inline: true) unless halfops.length.zero?
+    embed.add_field(name: '+Voiced', value: voiced.join(', '), inline: true) unless voiced.length.zero?
+    embed.add_field(name: 'Member', value: member.join(', '), inline: true) unless member.length.zero?
+  end
+end
+
+Dir["#{File.dirname(__FILE__)}/discord/*.rb"].each { |file| require file }
+
+Dir["#{File.dirname(__FILE__)}/discord/*.rb"].each do |wow|
+  bob = File.readlines(wow) { |line| line.split.map(&:to_s).join }
+  command = bob[0][7..bob[0].length]
+  command.delete!("\n")
+  command = Object.const_get(command)
+  Discord.include! command
+  puts "Disord plugin #{command} successfully loaded!"
 end
 
 puts 'Initial Startup complete, loading all plugins...'
