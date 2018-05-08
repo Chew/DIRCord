@@ -48,10 +48,21 @@ class About
     userhost = data[0].delete(':')
     command = data[1]
     channel = data[2].delete(':')
+    disc = channel[1..channel.length].downcase
     uh = userhost.split(/!|@/)
     nick = uh[0]
     user = uh[1]
     host = uh[2]
-    join(nick, user, host, channel) if command == 'JOIN'
+    if command == 'JOIN' && nick != CONFIG['nickname']
+      join(nick, user, host, channel)
+      return
+    end
+    if command == 'JOIN' && nick == CONFIG['nickname']
+      chan = Discord.server(CONFIG['server_id']).text_channels.find { |chane| chane.name == disc }
+      if chan.nil?
+        Discord.server(CONFIG['server_id']).create_channel(channel.downcase)
+        join(nick, user, host, channel)
+      end
+    end
   end
 end
