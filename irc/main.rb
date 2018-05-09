@@ -3,7 +3,7 @@ class About
 
   listen_to :channel, method: :send
   listen_to :connect, method: :identify
-  listen_to :leaving, method: :leave
+  # listen_to :leaving, method: :leave
   listen_to :catchall, method: :net
 
   def identify(_m)
@@ -29,6 +29,20 @@ class About
     end
   end
 
+  def part(nick, user, host, channel, reason)
+    channel = channel[1..channel.length]
+    chan = Discord.server(CONFIG['server_id']).text_channels.find { |chane| chane.name == channel.downcase }.id
+    message = format('*⇐ %s left (%s@%s) %s*', nick, user, host, reason)
+    Discord.channel(chan).send(message)
+  end
+
+  def quit(nick, user, host, channel, reason)
+    channel = channel[1..channel.length]
+    chan = Discord.server(CONFIG['server_id']).text_channels.find { |chane| chane.name == channel.downcase }.id
+    message = format('*⇐ %s quit (%s@%s) %s*', nick, user, host, reason)
+    Discord.channel(chan).send(message)
+  end
+
   def send(m)
     return if Time.now.to_i - STARTTIME.to_i == 10
     channel = m.channel.to_s[1..m.channel.to_s.length]
@@ -48,6 +62,8 @@ class About
     userhost = data[0].delete(':')
     command = data[1]
     channel = data[2].delete(':')
+    reason = data[3]
+    reason = reason[1..reason.length] unless reason.nil?
     disc = channel[1..channel.length].downcase
     uh = userhost.split(/!|@/)
     nick = uh[0]
@@ -57,12 +73,18 @@ class About
       join(nick, user, host, channel)
       return
     end
+    if command == 'QUIT' && nick != CONFIG['nickname']
+      quit(nick, user, host, channel, reason)
+      return
+    end
+    if command == 'PART' && nick != CONFIG['nickname']
+      part(nick, user, host, channel, reason)
+      return
+    end
     if command == 'JOIN' && nick == CONFIG['nickname']
       chan = Discord.server(CONFIG['server_id']).text_channels.find { |chane| chane.name == disc }
-      if chan.nil?
-        Discord.server(CONFIG['server_id']).create_channel(channel.downcase)
-        join(nick, user, host, channel)
-      end
+      Discord.server(CONFIG['server_id']).create_channel(channel.downcase) if chan.nil?
+      join(nick, user, host, channel)
     end
   end
 end
