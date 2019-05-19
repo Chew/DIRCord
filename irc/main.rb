@@ -5,6 +5,7 @@ class About
   listen_to :connect, method: :identify
   # listen_to :leaving, method: :leave
   listen_to :catchall, method: :net
+  listen_to :private, method: :dm
 
   def identify(_m)
     User('NickServ').send("identify #{CONFIG['nickservpass']}") unless CONFIG['nickservpass'].nil? || CONFIG['nickservpass'] == ''
@@ -48,6 +49,22 @@ class About
     chan = Discord.server(CONFIG['server_id']).text_channels.find { |chane| chane.name == channel.downcase }.id
     message = format('*⇐ %s quit (%s@%s) %s*', nick, user, host, reason)
     Discord.channel(chan).send(message)
+  end
+
+  def dm(m)
+    begin
+      dm_category = Discord.server(CONFIG['server_id']).categories.find { |chane| chane.name == "Direct Messages" }.id
+    rescue NoMethodError
+      dm_category = Discord.server(CONFIG['server_id']).create_channel("Direct Messages", 4, reason: "New DM").id
+    end
+
+    begin
+      dm_channel = Discord.server(CONFIG['server_id']).text_channels.find { |chane| chane.name == m.user.nick.downcase && chane.parent_id == dm_category }.id
+    rescue NoMethodError
+      dm_channel = Discord.server(CONFIG['server_id']).create_channel(m.user.nick.downcase, 0, parent: dm_category, reason: "New DM from #{m.user.nick}").id
+    end
+
+    Discord.channel(dm_channel).send(m.message)
   end
 
   def send(m)

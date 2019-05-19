@@ -65,7 +65,17 @@ Discord = Discordrb::Commands::CommandBot.new token: CONFIG['token'], client_id:
 Dir["#{File.dirname(__FILE__)}/irc/*.rb"].each { |file| require file }
 
 Discord.message(start_with: not!('~'), from: CONFIG['user_id']) do |event|
-  Irc.Channel("\##{event.channel.name}").send(event.message.content.to_s)
+  begin
+    dm_category = Discord.server(CONFIG['server_id']).categories.find { |chane| chane.name == "Direct Messages" }.id
+  rescue NoMethodError
+    dm_category = 0
+  end
+
+  if event.channel.parent_id == dm_category
+    Irc.User(event.channel.name).send(event.message.content.to_s)
+  else
+    Irc.Channel("\##{event.channel.name}").send(event.message.content.to_s)
+  end
 end
 
 Dir["#{File.dirname(__FILE__)}/discord/*.rb"].each { |file| require file }
@@ -86,7 +96,13 @@ Discord.ready do |_meme|
 end
 
 Discord.channel_create do |event|
-  Irc.Channel("\##{event.channel.name}").join if event.channel.text?
+  begin
+    dm_category = Discord.server(CONFIG['server_id']).categories.find { |chane| chane.name == "Direct Messages" }.id
+  rescue NoMethodError
+    dm_category = 0
+  end
+
+  Irc.Channel("\##{event.channel.name}").join if event.channel.text? && event.channel.parent_id != dm_category
 end
 
 Discord.channel_delete do |event|
@@ -107,12 +123,19 @@ Discord.run :async
 # Configure the Bot
 Irc = Cinch::Bot.new do
   configure do |c|
+
+    begin
+      dm_category = Discord.server(CONFIG['server_id']).categories.find { |chane| chane.name == "Direct Messages" }.id
+    rescue NoMethodError
+      dm_category = 0
+    end
+
     # Bot Settings, Taken from pre-config
     c.nick = botnick
     c.server = botserver
 
     chans = []
-    Discord.server(CONFIG['server_id']).text_channels.each { |bob| chans[chans.length] = "\##{bob.name}" }
+    Discord.server(CONFIG['server_id']).text_channels.each { |bob| chans.push("\##{bob.name}") unless bob.parent_id == dm_category }
 
     c.channels = [chans.join(',')]
     c.port = botport
