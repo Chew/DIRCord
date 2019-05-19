@@ -83,7 +83,7 @@ class About
   def net(m)
     content = m.raw
     data = content.split(' ')
-    userhost = data[0].delete(':')
+    userhost = data[0][1..-1]
     command = data[1]
     channel = data[2].delete(':')
     reason = data[3]
