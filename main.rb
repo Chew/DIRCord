@@ -65,6 +65,8 @@ Discord = Discordrb::Commands::CommandBot.new token: CONFIG['token'], client_id:
 Dir["#{File.dirname(__FILE__)}/irc/*.rb"].each { |file| require file }
 
 Discord.message(start_with: not!('~'), from: CONFIG['user_id']) do |event|
+  break if event.channel.pm?
+
   begin
     dm_category = Discord.server(CONFIG['server_id']).categories.find { |chane| chane.name == "Direct Messages" }.id
   rescue NoMethodError
