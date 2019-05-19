@@ -36,6 +36,13 @@ class About
     Discord.channel(chan).send(message)
   end
 
+  def mode(changed, bywho, modes, channel)
+    channel = channel[1..channel.length]
+    chan = Discord.server(CONFIG['server_id']).text_channels.find { |chane| chane.name == channel.downcase }.id
+    message = format('*%s changed modes +%s on %s*', changed, modes, bywho)
+    Discord.channel(chan).send(message)
+  end
+
   def quit(nick, user, host, channel, reason)
     channel = channel[1..channel.length]
     chan = Discord.server(CONFIG['server_id']).text_channels.find { |chane| chane.name == channel.downcase }.id
@@ -79,6 +86,10 @@ class About
     end
     if command == 'PART' && nick != CONFIG['nickname']
       part(nick, user, host, channel, reason)
+      return
+    end
+    if command == 'MODE' && data[4] != CONFIG['nickname']
+      mode(nick, data[4], reason, channel)
       return
     end
     if command == 'JOIN' && nick == CONFIG['nickname']
