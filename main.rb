@@ -42,9 +42,9 @@ botuser = if CONFIG['username'].nil? || CONFIG['username'] == ''
           end
 
 botrealname = if CONFIG['realname'].nil? || CONFIG['realname'] == ''
-                'Proud DIRCord User! http://github.com/Chewsterchew/DIRCord'
+                'Proud DIRCord User! http://github.com/Chew/DIRCord'
               else
-                (CONFIG['realname']).to_s
+                "#{CONFIG['realname']} - http://github.com/Chew/DIRCord"
               end
 
 botssl = if CONFIG['ssl'].nil? || CONFIG['ssl'] == '' || CONFIG['ssl'] == 'false' || CONFIG['ssl'] == false
