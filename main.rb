@@ -3,9 +3,13 @@
 # Require Gems needed to run the program
 require './requiregems.rb'
 
+config = ARGV[0] || 'config.yaml'
+
+puts "Loading config from: #{config}"
+
 # Load config from file
 begin
-  CONFIG = YAML.load_file('config.yaml')
+  CONFIG = YAML.load_file(config)
 rescue StandardError
   puts 'Config file not found, this is fatal.'
   exit
