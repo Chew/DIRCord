@@ -5,7 +5,7 @@ module Users
     channel = Irc.Channel("\##{event.channel.name}")
     users = channel.users.keys.join(' ').split(' ')
     modes = []
-    channel.users.each { |e| modes[modes.length] = e[1] }
+    channel.users.each { |e| modes.push(e[1]) }
 
     opers = []
     owners = []
@@ -15,10 +15,10 @@ module Users
     voiced = []
     member = []
 
-    (0..modes.length - 1).each do |i|
+    modes.length.times.each do |i|
       mod = modes[i]
       if mod.length.zero?
-        member[member.length] = users[i]
+        member.push users[i]
         next
       end
       mod = [mod[0]] if mod.length > 1
