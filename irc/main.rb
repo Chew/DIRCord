@@ -14,32 +14,50 @@ class About
 
   def join(nick, user, host, channel)
     channel = channel[1..channel.length]
-    chan = Discord.server(CONFIG['server_id']).text_channels.find { |chane| chane.name == channel.downcase }.id
+    begin
+      dm_category = Discord.server(CONFIG['server_id']).categories.find { |chane| chane.name == "Direct Messages" }.id
+    rescue NoMethodError
+      dm_category = Discord.server(CONFIG['server_id']).create_channel("Direct Messages", 4, reason: "New DM").id
+    end
+    chan = Discord.server(CONFIG['server_id']).text_channels.find { |chane| chane.name == channel.downcase && chane.parent_id != dm_category }.id
     message = format('*→ %s joined (%s@%s)*', nick, user, host)
     Discord.channel(chan).send(message)
   end
 
   def leave(m, user)
-    if m.channel?
-      channel = m.channel.to_s[1..m.channel.to_s.length]
-      chan = Discord.server(CONFIG['server_id']).text_channels.find { |chane| chane.name == channel.downcase }.id
-      message = format('*⇐ %s left (%s)*', user, user.host)
-      Discord.channel(chan).send(message)
-      # else
-      # message = format(' %s (%s) quit.', user, user.host)
+    channel = m.channel.to_s[1..m.channel.to_s.length]
+    begin
+      dm_category = Discord.server(CONFIG['server_id']).categories.find { |chane| chane.name == "Direct Messages" }.id
+    rescue NoMethodError
+      dm_category = Discord.server(CONFIG['server_id']).create_channel("Direct Messages", 4, reason: "New DM").id
     end
+    chan = Discord.server(CONFIG['server_id']).text_channels.find { |chane| chane.name == channel.downcase && chane.parent_id != dm_category }.id
+    message = format('*⇐ %s left (%s)*', user, user.host)
+    Discord.channel(chan).send(message)
+    # else
+    # message = format(' %s (%s) quit.', user, user.host)
   end
 
   def part(nick, user, host, channel, reason)
     channel = channel[1..channel.length]
-    chan = Discord.server(CONFIG['server_id']).text_channels.find { |chane| chane.name == channel.downcase }.id
+    begin
+      dm_category = Discord.server(CONFIG['server_id']).categories.find { |chane| chane.name == "Direct Messages" }.id
+    rescue NoMethodError
+      dm_category = Discord.server(CONFIG['server_id']).create_channel("Direct Messages", 4, reason: "New DM").id
+    end
+    chan = Discord.server(CONFIG['server_id']).text_channels.find { |chane| chane.name == channel.downcase && chane.parent_id != dm_category }.id
     message = format('*⇐ %s left (%s@%s) %s*', nick, user, host, reason)
     Discord.channel(chan).send(message)
   end
 
   def mode(changed, bywho, modes, channel)
     channel = channel[1..channel.length]
-    chan = Discord.server(CONFIG['server_id']).text_channels.find { |chane| chane.name == channel.downcase }.id
+    begin
+      dm_category = Discord.server(CONFIG['server_id']).categories.find { |chane| chane.name == "Direct Messages" }.id
+    rescue NoMethodError
+      dm_category = Discord.server(CONFIG['server_id']).create_channel("Direct Messages", 4, reason: "New DM").id
+    end
+    chan = Discord.server(CONFIG['server_id']).text_channels.find { |chane| chane.name == channel.downcase && chane.parent_id != dm_category }.id
     message = format('*%s changed modes +%s on %s*', changed, modes, bywho)
     Discord.channel(chan).send(message)
   end
@@ -72,9 +90,16 @@ class About
     channel = m.channel.to_s[1..m.channel.to_s.length]
     name = m.user.name
     message = m.message
-    chan = Discord.server(CONFIG['server_id']).text_channels.find { |chane| chane.name == channel.downcase }.id
+
+    begin
+      dm_category = Discord.server(CONFIG['server_id']).categories.find { |chane| chane.name == "Direct Messages" }.id
+    rescue NoMethodError
+      dm_category = Discord.server(CONFIG['server_id']).create_channel("Direct Messages", 4, reason: "New DM").id
+    end
+    chan = Discord.server(CONFIG['server_id']).text_channels.find { |chane| chane.name == channel.downcase && chane.parent_id != dm_category }.id
 
     message.gsub!(CONFIG['nickname'], "<@#{CONFIG['user_id']}>")
+    message.gsub!(/ (.+)/, ' ' => "*", '' => "*")
     message.gsub!(/([0-9]\d{0,2})/, '')
 
     Discord.channel(chan).send("**<#{name}>** #{message}")
