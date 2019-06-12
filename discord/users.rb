@@ -15,8 +15,7 @@ module Users
     voiced = []
     member = []
 
-    modes.length.times.each do |i|
-      mod = modes[i]
+    modes.each_with_index do |mod, i|
       if mod.length.zero?
         member.push users[i]
         next
@@ -34,7 +33,7 @@ module Users
       embed.title = "Users in \##{event.channel.name}"
       embed.colour = 0xe7cf31
 
-      embed.add_field(name: '!Opers', value: opers.join(', '), inline: true) unless owners.length.zero?
+      embed.add_field(name: '!Opers', value: opers.join(', '), inline: true) unless opers.length.zero?
       embed.add_field(name: '~Owners', value: owners.join(', '), inline: true) unless owners.length.zero?
       embed.add_field(name: '&Admins', value: admins.join(', '), inline: true) unless admins.length.zero?
       embed.add_field(name: '@Ops', value: ops.join(', '), inline: true) unless ops.length.zero?
