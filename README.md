@@ -19,7 +19,7 @@ Check the [issues](http://github.com/Chewsterchew/DIRCord/issues) to see what I'
 
 2) Copy your *user ID*, you'll need it for later.
 
-3) Go to the [Discord Developer Portal](https://discordapp.com/developers/applications/) Make a new application, give it a name, and an avatar if you want.  Copy the *Client ID*, you'll need it for later.  Then head to the **Bot** Section.  Create a bot, scroll down and select the **Administrator** Permission.  Make sure you unselect the slider that makes it a public bot, you don't want anyone but you to have this bot.  Hit the **Copy** button underneath where it says *Bot token*, you'll need this for later.  **DO NOT UNDER ANY CIRCUMSTANCES GIVE *ANYONE* YOUR BOT TOKEN! THIS ALLOWS ANYONE TO TAKE CONTROL OF *YOUR* BOT!**  If you do accidently leak your bot token, do not fear, all hope is not lost.  Simply hit the *Regenerate* button and copy your new token.  **Keep in mind that in order to give it the *Administrator* permission, you *MUST* have 2FA enabled on your discord account.  If you don't know how to do this, go [here](https://support.discordapp.com/hc/en-us/articles/219576828-Setting-up-Two-Factor-Authentication).**
+3) Go to the [Discord Developer Portal](https://discordapp.com/developers/applications/) Make a new application, give it a name and an avatar if you want.  Copy the *Client ID*, you'll need it for later.  Then head to the **Bot** Section.  Create a bot, scroll down and select the **Administrator** Permission.  Make sure you unselect the slider that makes it a public bot, you don't want anyone but you to have this bot.  Hit the **Copy** button underneath where it says *Bot token*, you'll need this for later.
 
 4) Invite the bot to the server, if you don't know how to do that, go [here](https://discordapi.com/permissions.html)  Click on the **Administrator** permission box, and scroll down.  Paste in your *Client ID* that you got from the Discord Developer Portal, and open the link at the bottom of the page.  **DO NOT CHECK ANY OTHER BOXES OTHER OR FILL IN ANYTHING ELSE OTHER THAN THE CLIENT ID.**
 
@@ -29,13 +29,13 @@ Check the [issues](http://github.com/Chewsterchew/DIRCord/issues) to see what I'
 
 6) Open up your CLI, and run `sudo apt update` to make sure that all of your packages are up to date.  
 
-7) Navigate to your home folder. *(`cd home/[user]`)*
+7) Navigate to your home folder. *(`cd ~`)*
 
 8) Make sure you have *git* installed *(`sudo apt install git`)*  Then, `git clone https://github.com/Chew/DIRCord.git` 
 
 9) CD to the directory, `cd DIRCord/`
 
-10) Make sure you have *ruby* insalled *(`sudo apt install ruby-full`)*
+10) Make sure you have *ruby* [insalled](https://www.ruby-lang.org/en/)
 
 11) Run `ruby requiregems.rb`  if asked, if you would like to install the gems, respond with *y* for both
 
@@ -61,11 +61,7 @@ user_id: [your discord user id from Step 2]
 
 14) Once you're done, press *CTRL + x* to activate nano's shortcuts, then press *y* followed by *enter*.  (This saves the file) 
 
-15) I would suggest using *tmux* do run this, so you don't have to have a console window constantly open.  (*`sudo apt install tmux`*)
-
-16) For non-tmux, run `ruby main.rb` boom, you're good to go!
-
-17) For tmux, run `tmux new -s DIRCord` then run `ruby main.rb` congrats, now it's running!  To exit the shell without killing the bot, press *CTRL + b* to activate tmux's hotkeys, then press *d* to detach from your shell.  To reattach, use `tmux a -t DIRCord`.
+6) For non-tmux, run `ruby main.rb` boom, you're good to go!
 
 18) Back in Discord, make new channels for the channels on IRC that you want to join.
 
@@ -79,10 +75,11 @@ IRC however, oh boy. On Startup, it will put a BUNCH OF STUFF in the console tha
 
 Then, every 2 mins or so, it will "ping" the server, and get a "pong" back.
 
-# Prefix
+## Prefix
 
 The bot's default prefix is `~`
-Commands:
+
+## Commands:
 
 * help: Shows a list of all the commands available or displays help for a specific command.
 * users: Get a list of users in the current channel
