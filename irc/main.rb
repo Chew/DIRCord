@@ -102,7 +102,16 @@ class About
     message.gsub!(/ (.+)/, ' ' => "*", '' => "*")
     message.gsub!(/([0-9]\d{0,2})/, '')
 
-    Discord.channel(chan).send("**<#{name}>** #{message}")
+    if Discord.channel(chan).webhooks.empty?
+      Discord.channel(chan).send("**<#{name}>** #{message}")
+    else
+      hook = Discord.channel(chan).webhooks[0]
+      client = Discordrb::Webhooks::Client.new(url: "https://canary.discordapp.com/api/webhooks/#{hook.id}/#{hook.token}")
+      client.execute do |builder|
+        builder.content = message
+        builder.username = name
+      end
+    end
   end
 
   def net(m)

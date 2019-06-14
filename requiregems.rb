@@ -13,6 +13,7 @@ rescue LoadError
 end
 begin
   require 'discordrb'
+  require 'discordrb/webhooks'
 rescue LoadError
   puts "You're missing the gem `discordrb`. Would you like to install this now? (y/n)"
   input = gets.chomp
