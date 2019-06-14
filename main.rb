@@ -77,10 +77,15 @@ Discord.message(start_with: not!('~'), from: CONFIG['user_id']) do |event|
     dm_category = 0
   end
 
+  message = event.message.content.to_s
+  unless event.message.attachments.empty?
+    message = "#{message} #{event.message.attachments[0].url}"
+  end
+
   if event.channel.parent_id == dm_category
-    Irc.User(event.channel.name).send(event.message.content.to_s)
+    Irc.User(event.channel.name).send(message)
   else
-    Irc.Channel("\##{event.channel.name}").send(event.message.content.to_s)
+    Irc.Channel("\##{event.channel.name}").send(message)
   end
 end
 
