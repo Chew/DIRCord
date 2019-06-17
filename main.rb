@@ -128,6 +128,15 @@ Discord.message_delete do |_event|
   Discord.user(CONFIG['user_id']).pm('Hey, you just deleted a message, just wanted to let you know that IRC users still see the deleted message. Thanks!')
 end
 
+Discord.presence(from: CONFIG['user_id']) do |event|
+  if event.status == :idle
+    Irc.irc.send("AWAY :Away on discord")
+  end
+  if event.status == :online
+    Irc.irc.send("AWAY")
+  end
+end
+
 puts 'Bot is ready!'
 Discord.run :async
 
