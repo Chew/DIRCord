@@ -1,1 +1,2 @@
-config.yaml
+*.yaml
+!config.example.yaml
