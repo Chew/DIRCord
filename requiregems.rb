@@ -18,7 +18,7 @@ rescue LoadError
   puts "You're missing the gem `discordrb`. Would you like to install this now? (y/n)"
   input = gets.chomp
   if input == 'y'
-    `gem install cinch`
+    `gem install discordrb`
     puts 'Gem installed! Continuing..'
   else
     puts 'To continue, install the discordrb gem'
