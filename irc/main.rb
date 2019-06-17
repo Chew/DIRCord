@@ -90,6 +90,12 @@ class About
     channel = m.channel.to_s[1..m.channel.to_s.length]
     name = m.user.name
     message = m.message
+    user = m.user.user
+
+    irccloud = user.match?(/(s|u)id(.+)/)
+    if irccloud
+      id = user.gsub(/(s|u)id/, '').to_i
+    end
 
     begin
       dm_category = Discord.server(CONFIG['server_id']).categories.find { |chane| chane.name == "Direct Messages" }.id
@@ -110,6 +116,9 @@ class About
       client.execute do |builder|
         builder.content = message
         builder.username = name
+        if irccloud
+          builder.avatar_url = "https://static.irccloud-cdn.com/avatar-redirect/#{id}"
+        end
       end
     end
   end
