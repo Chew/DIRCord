@@ -108,6 +108,18 @@ class About
     message.gsub!(/ (.+)/, ' ' => "*", '' => "*")
     message.gsub!(/([0-9]\d{0,2})/, '')
 
+    if CONFIG['highlights'].nil?
+      CONFIG['highlights'] = ''
+      File.open(CONFIG_FILE, 'w') { |f| f.write CONFIG.to_yaml }
+    end
+
+    CONFIG['highlights'].split(',').each do |word|
+      if message.include?(word)
+        message = "[HW <@#{CONFIG['user_id']}>] #{message}"
+        break
+      end
+    end
+
     if Discord.channel(chan).webhooks.empty?
       Discord.channel(chan).send("**<#{name}>** #{message}")
     else
