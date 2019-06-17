@@ -35,7 +35,7 @@ Check the [issues](http://github.com/Chewsterchew/DIRCord/issues) to see what I'
 
 9) CD to the directory, `cd DIRCord/`
 
-10) Make sure you have *ruby* [insalled](https://www.ruby-lang.org/en/)
+10) Make sure you have *ruby* [installed](https://www.ruby-lang.org/en/) and *RVM* [installed](https://rvm.io/)
 
 11) Run `ruby requiregems.rb`  if asked, if you would like to install the gems, respond with *y* for both
 
@@ -61,9 +61,7 @@ user_id: [your discord user id from Step 2]
 
 14) Once you're done, press *CTRL + x* to activate nano's shortcuts, then press *y* followed by *enter*.  (This saves the file) 
 
-6) For non-tmux, run `ruby main.rb` boom, you're good to go!
-
-18) Back in Discord, make new channels for the channels on IRC that you want to join.
+15) Back in Discord, make new channels for the channels on IRC that you want to join.
 
 ## Your console on running
 
@@ -75,13 +73,8 @@ IRC however, oh boy. On Startup, it will put a BUNCH OF STUFF in the console tha
 
 Then, every 2 mins or so, it will "ping" the server, and get a "pong" back.
 
-## Prefix
-
-The bot's default prefix is `~`
-
 ## Commands:
-
-* help: Shows a list of all the commands available or displays help for a specific command.
-* users: Get a list of users in the current channel
-* topic: sets Discord channel topic to match that of the IRC channel.
-* join: joins specified channel.
+* ~help: Shows a list of all the commands available or displays help for a specific command.
+* ~users: Get a list of users in the current channel
+* ~topic: sets Discord channel topic to match that of the IRC channel.
+* ~join: joins specified channel.
