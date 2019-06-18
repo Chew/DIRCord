@@ -75,6 +75,9 @@ Then, every 2 mins or so, it will "ping" the server, and get a "pong" back.
 
 ## Commands:
 * ~help: Shows a list of all the commands available or displays help for a specific command.
-* ~users: Get a list of users in the current channel
-* ~topic: sets Discord channel topic to match that of the IRC channel.
-* ~join: joins specified channel.
+* ~users: Get a list of users in the current channel.
+* ~topic: Update's discord channel's topic to match that of the connected IRC channel.  Also displays channel modes.
+* ~join: Joins channel on IRC, and creates channel on Discord.
+* ~setupwebhook: Creates a webhook for this channel. All messages will be sent as webhooks.
+* ~eval: Evals given input through the bot.
+* ~highlights: Use `list` to view alertable phrases you have set up, use `add` and `remove` to add or remove alertable phrases respectively.
