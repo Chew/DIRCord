@@ -1,7 +1,7 @@
 module Join
   extend Discordrb::Commands::CommandContainer
 
-  command(:join, min_args: 0, max_args: 2, description: "Creates specifed channel in discord, and joins channel in IRC.") do |event, channel = nil, pass = nil|
+  command(:join, min_args: 0, max_args: 2, description: "Joins channel on IRC, and creates channel on Discord.") do |event, channel = nil, pass = nil|
     if channel.nil?
       channel = event.channel.name
     elsif channel.include?('<') && channel.split('>').length == 1
