@@ -82,7 +82,51 @@ class About
       dm_channel = Discord.server(CONFIG['server_id']).create_channel(m.user.nick.downcase, 0, parent: dm_category, reason: "New DM from #{m.user.nick}").id
     end
 
-    Discord.channel(dm_channel).send(m.message)
+    message = m.message
+
+    message.gsub!(CONFIG['nickname'], "<@#{CONFIG['user_id']}>")
+    last = 'none'
+    msg = message.split('')
+    edited = msg
+    i = 0
+    msg.each do |char|
+      if char == "\u0002"
+        puts 'bold found!'
+        edited[i] = '**'
+        i += 1
+        last = 'bold'
+      end
+      if char == "\u001D"
+        puts 'italics found!'
+        edited[i] = '*'
+        last = 'italic'
+      end
+      if char == "\u001F"
+        puts 'underline found!'
+        edited[i] = '__'
+        i += 1
+        last = 'uline'
+      end
+      if char == "\u000F"
+        puts 'reset char found!'
+        case last
+        when 'bold'
+          edited[i] = '**'
+          i += 1
+        when 'italic'
+          edited[i] = '*'
+        when 'uline'
+          edited[i] = '__'
+          i += 1
+        end
+      end
+      i += 1
+    end
+    message = edited.join('')
+    puts message
+    message.gsub!(/([0-9]\d{0,2})/, '')
+
+    Discord.channel(dm_channel).send(message)
   end
 
   def send(m)
@@ -105,7 +149,45 @@ class About
     chan = Discord.server(CONFIG['server_id']).text_channels.find { |chane| chane.name == channel.downcase && chane.parent_id != dm_category }.id
 
     message.gsub!(CONFIG['nickname'], "<@#{CONFIG['user_id']}>")
-    message.gsub!(/ (.+)/, ' ' => "*", '' => "*")
+    message.gsub!(CONFIG['nickname'], "<@#{CONFIG['user_id']}>")
+    last = 'none'
+    msg = message.split('')
+    edited = msg
+    i = 0
+    msg.each do |char|
+      if char == "\u0002"
+        puts 'bold found!'
+        edited[i] = '**'
+        i += 1
+        last = 'bold'
+      end
+      if char == "\u001D"
+        puts 'italics found!'
+        edited[i] = '*'
+        last = 'italic'
+      end
+      if char == "\u001F"
+        puts 'underline found!'
+        edited[i] = '__'
+        i += 1
+        last = 'uline'
+      end
+      if char == "\u000F"
+        puts 'reset char found!'
+        case last
+        when 'bold'
+          edited[i] = '**'
+          i += 1
+        when 'italic'
+          edited[i] = '*'
+        when 'uline'
+          edited[i] = '__'
+          i += 1
+        end
+      end
+      i += 1
+    end
+    message = edited.join('')
     message.gsub!(/([0-9]\d{0,2})/, '')
 
     if CONFIG['highlights'].nil?
