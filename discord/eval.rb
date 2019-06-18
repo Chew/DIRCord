@@ -1,7 +1,7 @@
 module Eval
   extend Discordrb::Commands::CommandContainer
 
-  command(:eval) do |event, *code|
+  command(:eval, description: "Evals.") do |event, *code|
     break unless event.user.id == CONFIG['user_id']
 
     begin
