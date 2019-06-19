@@ -66,27 +66,27 @@ class Setup
 
   def configure(section)
     if section == 'botapp'
-      puts "This will help you setup your bot application. You must create a new bot for each instance."
-      puts "To advance to the next step, press enter."
+      puts 'This will help you setup your bot application. You must create a new bot for each instance.'
+      puts 'To advance to the next step, press enter.'
       gets
-      puts "Go to your applications page on the Discord found at https://discordapp.com/developers/applications"
+      puts 'Go to your applications page on the Discord found at https://discordapp.com/developers/applications'
       gets
       puts "Click New Application and name it something you'll remember. Maybe the IRC network name? DIRCord?"
       gets
       puts "Click the 'Bot' tab on the left, then click 'Add Bot', then 'Yes, do it!'"
       gets
-      puts "Now, click Copy to copy the token and paste it here."
+      puts 'Now, click Copy to copy the token and paste it here.'
       @config['token'] = gets.chomp
-      puts "All done :)"
+      puts 'All done :)'
       save
       discord
     end
 
     if section == 'discordserver'
-      puts "This step will make the bot create a server for you, and it will give you an awesome invite link. Then, just join!"
-      puts "To advance to the next step, press enter."
+      puts 'This step will make the bot create a server for you, and it will give you an awesome invite link. Then, just join!'
+      puts 'To advance to the next step, press enter.'
       gets
-      puts "Alright, first we check to see if you have discordrb installed!"
+      puts 'Alright, first we check to see if you have discordrb installed!'
       begin
         require 'discordrb'
         require 'discordrb/webhooks'
@@ -101,8 +101,8 @@ class Setup
           exit
         end
       end
-      puts "Logging into Discord..."
-      puts "Hey, btw, whatcha want the name of the Discord server to be?"
+      puts 'Logging into Discord...'
+      puts 'Hey, btw, whatcha want the name of the Discord server to be?'
       name = gets.chomp
       begin
         bot = Discordrb::Commands::CommandBot.new token: @config['token'], prefix: '~'
@@ -110,29 +110,29 @@ class Setup
         begin
           server = bot.create_server(name)
         rescue StandardError => e
-          puts "An error occured creating the server! Make sure you put in a token!"
+          puts 'An error occured creating the server! Make sure you put in a token!'
           puts "Error: #{e}"
           bot.stop
           discord
         end
         invite = server.default_channel.make_invite
-        server.create_channel("Direct Messages", 4, reason: "Direct Message Channel")
+        server.create_channel('Direct Messages', 4, reason: 'Direct Message Channel')
         server.everyone_role.packed = 8
-        server.voice_channels.each { |ch| ch.delete }
-        server.categories.each { |ch| ch.delete if ch.name == "Voice Channels" }
+        server.voice_channels.each(&:delete)
+        server.categories.each { |ch| ch.delete if ch.name == 'Voice Channels' }
         bot.stop
         puts "Server created! Here's the invite: #{invite.url}"
         @config['server_id'] = server.id.to_i
         save
       rescue StandardError => e
-        puts "An error occured creating the server! Make sure you put in a token!"
+        puts 'An error occured creating the server! Make sure you put in a token!'
         puts "Error: #{e}"
       end
       discord
     end
 
     if section == 'discordconf'
-      puts "Discord config is actually super easy, barely an inconvenience."
+      puts 'Discord config is actually super easy, barely an inconvenience.'
       puts 'Set your discord user id - REQUIRED'
       @config['user_id'] = gets.chomp.to_i
 

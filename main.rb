@@ -72,15 +72,13 @@ Discord.message(start_with: not!('~'), from: CONFIG['user_id']) do |event|
   break if event.channel.pm?
 
   begin
-    dm_category = Discord.server(CONFIG['server_id']).categories.find { |chane| chane.name == "Direct Messages" }.id
+    dm_category = Discord.server(CONFIG['server_id']).categories.find { |chane| chane.name == 'Direct Messages' }.id
   rescue NoMethodError
     dm_category = 0
   end
 
   message = event.message.content.to_s
-  unless event.message.attachments.empty?
-    message = "#{message} #{event.message.attachments[0].url}"
-  end
+  message = "#{message} #{event.message.attachments[0].url}" unless event.message.attachments.empty?
 
   if event.channel.parent_id == dm_category
     Irc.User(event.channel.name).send(message)
@@ -108,7 +106,7 @@ end
 
 Discord.channel_create do |event|
   begin
-    dm_category = Discord.server(CONFIG['server_id']).categories.find { |chane| chane.name == "Direct Messages" }.id
+    dm_category = Discord.server(CONFIG['server_id']).categories.find { |chane| chane.name == 'Direct Messages' }.id
   rescue NoMethodError
     dm_category = 0
   end
@@ -129,12 +127,8 @@ Discord.message_delete do |_event|
 end
 
 Discord.presence(from: CONFIG['user_id']) do |event|
-  if event.status == :idle
-    Irc.irc.send("AWAY :Away on discord")
-  end
-  if event.status == :online
-    Irc.irc.send("AWAY")
-  end
+  Irc.irc.send('AWAY :Away on discord') if event.status == :idle
+  Irc.irc.send('AWAY') if event.status == :online
 end
 
 puts 'Bot is ready!'
@@ -143,9 +137,8 @@ Discord.run :async
 # Configure the Bot
 Irc = Cinch::Bot.new do
   configure do |c|
-
     begin
-      dm_category = Discord.server(CONFIG['server_id']).categories.find { |chane| chane.name == "Direct Messages" }.id
+      dm_category = Discord.server(CONFIG['server_id']).categories.find { |chane| chane.name == 'Direct Messages' }.id
     rescue NoMethodError
       dm_category = 0
     end

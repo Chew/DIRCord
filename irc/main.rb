@@ -15,9 +15,9 @@ class About
   def join(nick, user, host, channel)
     channel = channel[1..channel.length]
     begin
-      dm_category = Discord.server(CONFIG['server_id']).categories.find { |chane| chane.name == "Direct Messages" }.id
+      dm_category = Discord.server(CONFIG['server_id']).categories.find { |chane| chane.name == 'Direct Messages' }.id
     rescue NoMethodError
-      dm_category = Discord.server(CONFIG['server_id']).create_channel("Direct Messages", 4, reason: "New DM").id
+      dm_category = Discord.server(CONFIG['server_id']).create_channel('Direct Messages', 4, reason: 'New DM').id
     end
     chan = Discord.server(CONFIG['server_id']).text_channels.find { |chane| chane.name == channel.downcase && chane.parent_id != dm_category }.id
     message = format('*→ %s joined (%s@%s)*', nick, user, host)
@@ -27,9 +27,9 @@ class About
   def leave(m, user)
     channel = m.channel.to_s[1..m.channel.to_s.length]
     begin
-      dm_category = Discord.server(CONFIG['server_id']).categories.find { |chane| chane.name == "Direct Messages" }.id
+      dm_category = Discord.server(CONFIG['server_id']).categories.find { |chane| chane.name == 'Direct Messages' }.id
     rescue NoMethodError
-      dm_category = Discord.server(CONFIG['server_id']).create_channel("Direct Messages", 4, reason: "New DM").id
+      dm_category = Discord.server(CONFIG['server_id']).create_channel('Direct Messages', 4, reason: 'New DM').id
     end
     chan = Discord.server(CONFIG['server_id']).text_channels.find { |chane| chane.name == channel.downcase && chane.parent_id != dm_category }.id
     message = format('*⇐ %s left (%s)*', user, user.host)
@@ -41,9 +41,9 @@ class About
   def part(nick, user, host, channel, reason)
     channel = channel[1..channel.length]
     begin
-      dm_category = Discord.server(CONFIG['server_id']).categories.find { |chane| chane.name == "Direct Messages" }.id
+      dm_category = Discord.server(CONFIG['server_id']).categories.find { |chane| chane.name == 'Direct Messages' }.id
     rescue NoMethodError
-      dm_category = Discord.server(CONFIG['server_id']).create_channel("Direct Messages", 4, reason: "New DM").id
+      dm_category = Discord.server(CONFIG['server_id']).create_channel('Direct Messages', 4, reason: 'New DM').id
     end
     chan = Discord.server(CONFIG['server_id']).text_channels.find { |chane| chane.name == channel.downcase && chane.parent_id != dm_category }.id
     message = format('*⇐ %s left (%s@%s) %s*', nick, user, host, reason)
@@ -53,9 +53,9 @@ class About
   def mode(changed, bywho, modes, channel)
     channel = channel[1..channel.length]
     begin
-      dm_category = Discord.server(CONFIG['server_id']).categories.find { |chane| chane.name == "Direct Messages" }.id
+      dm_category = Discord.server(CONFIG['server_id']).categories.find { |chane| chane.name == 'Direct Messages' }.id
     rescue NoMethodError
-      dm_category = Discord.server(CONFIG['server_id']).create_channel("Direct Messages", 4, reason: "New DM").id
+      dm_category = Discord.server(CONFIG['server_id']).create_channel('Direct Messages', 4, reason: 'New DM').id
     end
     chan = Discord.server(CONFIG['server_id']).text_channels.find { |chane| chane.name == channel.downcase && chane.parent_id != dm_category }.id
     message = format('*%s changed modes +%s on %s*', changed, modes, bywho)
@@ -71,9 +71,9 @@ class About
 
   def dm(m)
     begin
-      dm_category = Discord.server(CONFIG['server_id']).categories.find { |chane| chane.name == "Direct Messages" }.id
+      dm_category = Discord.server(CONFIG['server_id']).categories.find { |chane| chane.name == 'Direct Messages' }.id
     rescue NoMethodError
-      dm_category = Discord.server(CONFIG['server_id']).create_channel("Direct Messages", 4, reason: "New DM").id
+      dm_category = Discord.server(CONFIG['server_id']).create_channel('Direct Messages', 4, reason: 'New DM').id
     end
 
     begin
@@ -131,20 +131,19 @@ class About
 
   def send(m)
     return if Time.now.to_i - STARTTIME.to_i == 10
+
     channel = m.channel.to_s[1..m.channel.to_s.length]
     name = m.user.name
     message = m.message
     user = m.user.user
 
     irccloud = user.match?(/(s|u)id(.+)/)
-    if irccloud
-      id = user.gsub(/(s|u)id/, '').to_i
-    end
+    id = user.gsub(/(s|u)id/, '').to_i if irccloud
 
     begin
-      dm_category = Discord.server(CONFIG['server_id']).categories.find { |chane| chane.name == "Direct Messages" }.id
+      dm_category = Discord.server(CONFIG['server_id']).categories.find { |chane| chane.name == 'Direct Messages' }.id
     rescue NoMethodError
-      dm_category = Discord.server(CONFIG['server_id']).create_channel("Direct Messages", 4, reason: "New DM").id
+      dm_category = Discord.server(CONFIG['server_id']).create_channel('Direct Messages', 4, reason: 'New DM').id
     end
     chan = Discord.server(CONFIG['server_id']).text_channels.find { |chane| chane.name == channel.downcase && chane.parent_id != dm_category }.id
 
@@ -210,9 +209,7 @@ class About
       client.execute do |builder|
         builder.content = message
         builder.username = name
-        if irccloud
-          builder.avatar_url = "https://static.irccloud-cdn.com/avatar-redirect/#{id}"
-        end
+        builder.avatar_url = "https://static.irccloud-cdn.com/avatar-redirect/#{id}" if irccloud
       end
     end
   end
