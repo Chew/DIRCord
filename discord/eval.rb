@@ -1,7 +1,7 @@
 module Eval
   extend Discordrb::Commands::CommandContainer
 
-  command(:eval, description: "Evals given input through the bot.") do |event, *code|
+  command(:eval, description: "Evaluates Ruby expressions.  For Ruby experts, use with caution") do |event, *code|
     break unless event.user.id == CONFIG['user_id']
 
     begin
