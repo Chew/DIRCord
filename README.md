@@ -12,9 +12,15 @@ The only IRC Client you'll ever need, guaranteed!
 ## Missing Features
 
 Check the [issues](http://github.com/Chewsterchew/DIRCord/issues) to see what I'm planning next, or to suggest new things!
+## Requirements
 
-## Setup guide.
+* [Ruby (>= 2.4)](https://www.ruby-lang.org/en/)
+* [RVM](https://rvm.io/)
+* [Git](https://git-scm.com/)
 
+## Setup Guide
+
+*You no longer need to make a discord server, as the bot automatically makes one, however, it is left here for manual setup.*
 1) Create a server on Discord, copy the *server's ID*, you'll need it for later.
 
 2) Copy your *user ID*, you'll need it for later.
@@ -29,19 +35,16 @@ Check the [issues](http://github.com/Chewsterchew/DIRCord/issues) to see what I'
 
 6) Open up your CLI, and run `sudo apt update` to make sure that all of your packages are up to date.  
 
-7) Navigate to your home folder. *(`cd ~`)*
+7) `git clone https://github.com/Chew/DIRCord.git` 
 
-8) Make sure you have *git* installed *(`sudo apt install git`)*  Then, `git clone https://github.com/Chew/DIRCord.git` 
+8) Enter the directory with `cd DIRCord`
 
-9) CD to the directory, `cd DIRCord/`
+9) Run `ruby requiregems.rb` if prompted to install the gems, respond with *y* for all.
 
-10) Make sure you have *ruby* [installed](https://www.ruby-lang.org/en/) and *RVM* [installed](https://rvm.io/)
+10) `cp config.example.yaml config.yaml`This will copy the example config file into your config file.
 
-11) Run `ruby requiregems.rb`  if asked, if you would like to install the gems, respond with *y* for both
+11)  Using a text editor (such as Atom) or a command line editor (such as nano, emacs, or vim) open the *config.yaml* file and fill it out
 
-12) Using your favorite text editor (Such as Atom) or a command line editor, (Such as nano, emacs, or vim) make a new file called *config.yaml* (*For this tutorial, we will use nano*)
-
-13) `nano config.yaml` Then either type or paste in the following information:
 ```yaml
 ---
 nickname: [irc nickname]
@@ -59,9 +62,9 @@ user_id: [your discord user id from Step 2]
 * ssl can be set to false, if it is, change the port to *6667* however it might be different depending on your server, contact your server's administrators for help.
 **Replace all text in the brackets *[ ]* Including the brackets!**
 
-14) Once you're done, press *CTRL + x* to activate nano's shortcuts, then press *y* followed by *enter*.  (This saves the file) 
+12) `ruby main.rb` to start the bot.
 
-15) Back in Discord, make new channels for the channels on IRC that you want to join.
+13) Back in Discord, make new channels for the channels on IRC that you want to join.
 
 ## Your console on running
 
@@ -74,10 +77,10 @@ IRC however, oh boy. On Startup, it will put a BUNCH OF STUFF in the console tha
 Then, every 2 mins or so, it will "ping" the server, and get a "pong" back.
 
 ## Commands:
-* ~help: Shows a list of all the commands available or displays help for a specific command.
-* ~users: Get a list of users in the current channel.
-* ~topic: Update's discord channel's topic to match that of the connected IRC channel. Also displays channel modes.
-* ~join: Joins channel on IRC, and creates channel on Discord.
-* ~setupwebhook: Creates a webhook for this channel. All messages will be sent as webhooks.
-* ~eval: Evaluates Ruby expressions. Use with caution.
-* ~highlights: Manage your highlighted words. Use `list` to view alertable phrases you have set up, use `add` and `remove` to add or remove alertable phrases respectively.
+* `~help`: Shows a list of all the commands available or displays help for a specific command.
+* `~users`: Get a list of users in the current channel.
+* `~topic`: Update's discord channel's topic to match that of the connected IRC channel. Also displays channel modes.
+* `~join`: Joins channel on IRC, and creates channel on Discord.
+* `~setupwebhook`: Creates a webhook for this channel. All messages will be sent as webhooks.
+* `~eval`: Evaluates Ruby expressions. Use with caution.
+* `~highlights`: Manage your highlighted words. Use `list` to view alertable phrases you have set up, use `add` and `remove` to add or remove alertable phrases respectively.
