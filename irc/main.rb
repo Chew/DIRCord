@@ -188,6 +188,7 @@ class About
     end
     message = edited.join('')
     message.gsub!(/([0-9]\d{0,2})/, '')
+    message.gsub!("\u0003", '')
 
     if CONFIG['highlights'].nil?
       CONFIG['highlights'] = ''
