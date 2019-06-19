@@ -1,7 +1,7 @@
 module Topic
   extend Discordrb::Commands::CommandContainer
 
-  command(:topic) do |event|
+  command(:topic, description: "Updates the current Discord channel's topic to match the connected IRC channel's. Also displays channel modes.") do |event|
     modes = []
     m = Irc.Channel("\##{event.channel.name}")
     m.modes.each do |e, _f|

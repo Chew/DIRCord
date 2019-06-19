@@ -1,7 +1,7 @@
 module Users
   extend Discordrb::Commands::CommandContainer
 
-  command(:users, description: "Get a list of users in the current channel") do |event|
+  command(:users, description: "Get a list of users in the current channel.") do |event|
     channel = Irc.Channel("\##{event.channel.name}")
     users = channel.users.keys.join(' ').split(' ')
     modes = []
