@@ -14,16 +14,16 @@ The only IRC Client you'll ever need, guaranteed!
 Check the [issues](http://github.com/Chewsterchew/DIRCord/issues) to see what I'm planning next, or to suggest new things!
 ## Requirements
 
-* [Ruby (>= 2.4)](https://www.ruby-lang.org/en/)
-* [RVM](https://rvm.io/)
-* [Git](https://git-scm.com/)
+* Ruby (>= 2.4)
+* Git
 
 ## Setup Guide
 
-*You no longer need to make a discord server, as the bot automatically makes one, however, it is left here for manual setup.*
+### Manual Setup
+
 1) Create a server on Discord, copy the *server's ID*, you'll need it for later.
 
-2) Copy your *user ID*, you'll need it for later.
+2) Copy your *user ID* from Discord, you'll need it for later.
 
 3) Go to the [Discord Developer Portal](https://discordapp.com/developers/applications/) Make a new application, give it a name and an avatar if you want.  Copy the *Client ID*, you'll need it for later.  Then head to the **Bot** Section.  Create a bot, scroll down and select the **Administrator** Permission.  Make sure you unselect the slider that makes it a public bot, you don't want anyone but you to have this bot.  Hit the **Copy** button underneath where it says *Bot token*, you'll need this for later.
 
@@ -43,28 +43,31 @@ Check the [issues](http://github.com/Chewsterchew/DIRCord/issues) to see what I'
 
 10) `cp config.example.yaml config.yaml`This will copy the example config file into your config file.
 
-11)  Using a text editor (such as Atom) or a command line editor (such as nano, emacs, or vim) open the *config.yaml* file and fill it out
+11)  Using a text editor (such as Atom) or a command line editor (such as nano, emacs, or vim) open the *config.yaml* file and fill it out.
 
-```yaml
----
-nickname: [irc nickname]
-server: [irc server]
-realname: [(your name) via DIRCord]
-username: DIRCord
-nickservpass: [nickserv username] [nickserv password]
-ssl: 'true'
-port: 6697
-token: [discord bot's token from Step 3]
-server_id: [id of discord server you made in Step 1]
-user_id: [your discord user id from Step 2]
-```
-* nickserv username and password should be the same as your regular IRC account's username and password, so that way you get logged into the same stuff.
-* ssl can be set to false, if it is, change the port to *6667* however it might be different depending on your server, contact your server's administrators for help.
-**Replace all text in the brackets *[ ]* Including the brackets!**
-
-12) `ruby main.rb` to start the bot.
+12) `ruby main.rb` to start.
 
 13) Back in Discord, make new channels for the channels on IRC that you want to join.
+
+### Automatic Setup
+
+1) Copy your Discord user ID, you'll need it for later.
+
+2) Go to the [Discord Developer Portal](https://discordapp.com/developers/applications/) Make a new application, give it a name and an avatar if you want.  Copy the *Client ID*, you'll need it for later.  Then head to the **Bot** Section.  Create a bot, scroll down and select the **Administrator** Permission.  Make sure you unselect the slider that makes it a public bot, you don't want anyone but you to have this bot.  Hit the **Copy** button underneath where it says *Bot token*, you'll need this for later.
+
+## Here is where the fun begins: *These steps should be universal, but might not work on all devices, these instructions were made for linux, specifically Ubuntu.*
+
+3) Open up your CLI, and run `sudo apt update` to make sure that all of your packages are up to date.  
+
+4) `git clone https://github.com/Chew/DIRCord.git` 
+
+5) Enter the directory with `cd DIRCord`
+
+6) Run `ruby setup.rb` if prompted to install gems, respond with *y* for all.
+
+7) `ruby main.rb` to start.
+
+8) Back in Discord, make new channels for the channels on IRC that you want to join.
 
 ## Your console on running
 
