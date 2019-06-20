@@ -36,7 +36,7 @@ Now that this is set up, off to getting the program ready. We have 2 paths for t
 
 ### Automatic Setup
 
-1) Copy your Discord user ID, you'll need it for later.
+0) Make note of your Discord user ID, you'll need it for later.
 
 2) Run `ruby setup.rb`. Make sure to follow all the steps for Discord AND IRC.
 
