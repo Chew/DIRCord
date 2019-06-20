@@ -36,13 +36,13 @@ Now that this is set up, off to getting the program ready. We have 2 paths for t
 
 ### Automatic Setup
 
-0) Copy your Discord user ID, you'll need it for later.
+1) Copy your Discord user ID, you'll need it for later.
 
-1) Run `ruby setup.rb`. Make sure to follow all the steps for Discord AND IRC.
+2) Run `ruby setup.rb`. Make sure to follow all the steps for Discord AND IRC.
 
-2) Run `ruby main.rb` to start.
+3) Run `ruby main.rb` to start.
 
-3) Sit back and enjoy DIRCord!
+4) Sit back and enjoy DIRCord!
 
 ### Manual Setup
 
