@@ -11,7 +11,8 @@ The only IRC Client you'll ever need, guaranteed!
 
 ## Missing Features
 
-Check the [issues](http://github.com/Chewsterchew/DIRCord/issues) to see what I'm planning next, or to suggest new things!
+Check the [issues](http://github.com/Chew/DIRCord/issues) to see what I'm planning next, or to suggest new things!
+
 ## Requirements
 
 * Ruby (>= 2.4)
@@ -19,55 +20,49 @@ Check the [issues](http://github.com/Chewsterchew/DIRCord/issues) to see what I'
 
 ## Setup Guide
 
-### Manual Setup
+### Setting up the Environment
 
-1) Create a server on Discord, copy the *server's ID*, you'll need it for later.
+Before we get to the actual setup, we need to set up our program environment.
 
-2) Copy your *user ID* from Discord, you'll need it for later.
+#### Ubuntu Setup
 
-3) Go to the [Discord Developer Portal](https://discordapp.com/developers/applications/) Make a new application, give it a name and an avatar if you want.  Copy the *Client ID*, you'll need it for later.  Then head to the **Bot** Section.  Create a bot, scroll down and select the **Administrator** Permission.  Make sure you unselect the slider that makes it a public bot, you don't want anyone but you to have this bot.  Hit the **Copy** button underneath where it says *Bot token*, you'll need this for later.
+1) Open up your CLI, and run `sudo apt update` to make sure that all of your packages are up to date.  
 
-4) Invite the bot to the server, if you don't know how to do that, go [here](https://discordapi.com/permissions.html)  Click on the **Administrator** permission box, and scroll down.  Paste in your *Client ID* that you got from the Discord Developer Portal, and open the link at the bottom of the page.  **DO NOT CHECK ANY OTHER BOXES OTHER OR FILL IN ANYTHING ELSE OTHER THAN THE CLIENT ID.**
+2) `git clone https://github.com/Chew/DIRCord.git` 
 
-5) In the invite link, select your server that you made in Step 1, then invite the bot.
+3) Enter the directory with `cd DIRCord`
 
-## Here is where the fun begins: *These steps should be universal, but might not work on all devices, these instructions were made for linux, specifically Ubuntu.*
-
-6) Open up your CLI, and run `sudo apt update` to make sure that all of your packages are up to date.  
-
-7) `git clone https://github.com/Chew/DIRCord.git` 
-
-8) Enter the directory with `cd DIRCord`
-
-9) Run `ruby requiregems.rb` if prompted to install the gems, respond with *y* for all.
-
-10) `cp config.example.yaml config.yaml`This will copy the example config file into your config file.
-
-11)  Using a text editor (such as Atom) or a command line editor (such as nano, emacs, or vim) open the *config.yaml* file and fill it out.
-
-12) `ruby main.rb` to start.
-
-13) Back in Discord, make new channels for the channels on IRC that you want to join.
+Now that this is set up, off to getting the program ready. We have 2 paths for this, you can take the lazy (yet most efficient) way by using the convient setup file, otherwise you can do it all manually.
 
 ### Automatic Setup
 
-1) Copy your Discord user ID, you'll need it for later.
+0) Copy your Discord user ID, you'll need it for later.
 
-2) Go to the [Discord Developer Portal](https://discordapp.com/developers/applications/) Make a new application, give it a name and an avatar if you want.  Copy the *Client ID*, you'll need it for later.  Then head to the **Bot** Section.  Create a bot, scroll down and select the **Administrator** Permission.  Make sure you unselect the slider that makes it a public bot, you don't want anyone but you to have this bot.  Hit the **Copy** button underneath where it says *Bot token*, you'll need this for later.
+1) Run `ruby setup.rb`. Make sure to follow all the steps for Discord AND IRC.
 
-## Here is where the fun begins: *These steps should be universal, but might not work on all devices, these instructions were made for linux, specifically Ubuntu.*
+2) Run `ruby main.rb` to start.
 
-3) Open up your CLI, and run `sudo apt update` to make sure that all of your packages are up to date.  
+3) Sit back and enjoy DIRCord!
 
-4) `git clone https://github.com/Chew/DIRCord.git` 
+### Manual Setup
 
-5) Enter the directory with `cd DIRCord`
+1) Create a server on Discord, make note of the *server's ID*, you'll need it for later.
 
-6) Run `ruby setup.rb` if prompted to install gems, respond with *y* for all.
+2) Make note of your *user ID* from Discord, you'll need it for later.
 
-7) `ruby main.rb` to start.
+3) Go to the [Discord Developer Portal](https://discordapp.com/developers/applications/) and make a new application, give it a name and an avatar if you want. Then, head to the **Bot** section, then click create a bot. Make note of the **Copy** button underneath where it says *bot token*, you'll need this for later.
 
-8) Back in Discord, make new channels for the channels on IRC that you want to join.
+4) Invite the bot to the server, if you don't know how to do that, go to the **OAuth2** tab, scroll down and click **Bot**, scroll down, and click on the **Administrator** permission box. Copy the new URL between the 2 boxes and open this URL. Add it to your server you made in step 1.
+
+5) Run `ruby requiregems.rb` if prompted to install the gems, respond with *y* for all.
+
+6) Run `cp config.example.yaml config.yaml`, this will copy the example config file into your config file.
+
+7) Using a text editor (such as Atom) or a command line editor (such as nano, emacs, or vim) open the *config.yaml* file and fill it out.
+
+8) Run `ruby main.rb` to start.
+
+9) Enjoy DIRCord!
 
 ## Your console on running
 
@@ -79,7 +74,8 @@ IRC however, oh boy. On Startup, it will put a BUNCH OF STUFF in the console tha
 
 Then, every 2 mins or so, it will "ping" the server, and get a "pong" back.
 
-## Commands:
+## Commands
+
 * `~help`: Shows a list of all the commands available or displays help for a specific command.
 * `~users`: Get a list of users in the current channel.
 * `~topic`: Update's discord channel's topic to match that of the connected IRC channel. Also displays channel modes.
