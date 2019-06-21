@@ -46,9 +46,9 @@ botuser = if CONFIG['username'].nil? || CONFIG['username'] == ''
           end
 
 botrealname = if CONFIG['realname'].nil? || CONFIG['realname'] == ''
-                'Proud DIRCord User! http://github.com/Chew/DIRCord'
+                'Proud DIRCord User! https://github.com/Chew/DIRCord'
               else
-                "#{CONFIG['realname']} - http://github.com/Chew/DIRCord"
+                "#{CONFIG['realname']} - https://github.com/Chew/DIRCord"
               end
 
 botssl = if CONFIG['ssl'].nil? || CONFIG['ssl'] == '' || CONFIG['ssl'] == 'false' || CONFIG['ssl'] == false
@@ -63,7 +63,7 @@ botserverpass = if CONFIG['serverpass'].nil? || CONFIG['serverpass'] == ''
                   CONFIG['serverpass']
                 end
 
-Discord = Discordrb::Commands::CommandBot.new token: CONFIG['token'], client_id: CONFIG['client_id'], prefix: '~'
+Discord = Discordrb::Commands::CommandBot.new token: CONFIG['token'], client_id: CONFIG['client_id'], prefix: '~', command_doesnt_exist_message: "Uh oh! Command `%command%` is having trouble existing. Think it should? Report it on GitHub! <https://github.com/Chew/DIRCord>", ignore_bots: true, webhook_commands: false, name: "DIRCord", log_mode: :normal
 
 # Require each irc plugin
 Dir["#{File.dirname(__FILE__)}/irc/*.rb"].each { |file| require file }
