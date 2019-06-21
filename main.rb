@@ -68,8 +68,12 @@ Discord = Discordrb::Commands::CommandBot.new token: CONFIG['token'], client_id:
 # Require each irc plugin
 Dir["#{File.dirname(__FILE__)}/irc/*.rb"].each { |file| require file }
 
-Discord.message(start_with: not!('~'), from: CONFIG['user_id']) do |event|
+Discord.message(from: CONFIG['user_id']) do |event|
   break if event.channel.pm?
+  break if event.message.content.start_with?('~') && !event.message.content.start_with?('~~')
+  if event.message.content.start_with?('~~')
+    event.channel.send "Although that message started with the prefix of `~`, we detected you were probably trying to send a message with strikethough. Keep in mind, the IRC users will not see the strikethough, so you'll look like a fool, but that message got sent anyway."
+  end
 
   begin
     dm_category = Discord.server(CONFIG['server_id']).categories.find { |chane| chane.name == 'Direct Messages' }.id
