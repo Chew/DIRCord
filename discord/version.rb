@@ -1,7 +1,7 @@
 module Version
   extend Discordrb::Commands::CommandContainer
 
-  command(:update) do |event|
+  command(:update, description: 'Update DIRCord to the latest master version.') do |event|
     m = event.respond 'Updating...'
     changes = `git pull`
     m.edit('', Discordrb::Webhooks::Embed.new(
@@ -12,7 +12,7 @@ module Version
                ))
   end
 
-  command(:version) do |event|
+  command(:version, description: 'Check what version you\'re running, and see how far behind you are!') do |event|
     `git fetch`
     response = `git rev-list origin/master | wc -l`.to_i
     commits = `git rev-list master | wc -l`.to_i
