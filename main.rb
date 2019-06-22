@@ -138,6 +138,8 @@ Discord.message_delete do |_event|
 end
 
 Discord.presence(from: CONFIG['user_id']) do |event|
+  Irc.irc.send('AWAY :Offline on discord') if event.status == :offline
+  Irc.irc.send('AWAY') if event.status == :dnd
   Irc.irc.send('AWAY :Away on discord') if event.status == :idle
   Irc.irc.send('AWAY') if event.status == :online
 end
