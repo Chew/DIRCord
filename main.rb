@@ -84,6 +84,13 @@ Discord.message(from: CONFIG['user_id']) do |event|
   message = event.message.content.to_s
   message = "#{message} #{event.message.attachments[0].url}" unless event.message.attachments.empty?
 
+  message.split(' ').each do |word|
+    next unless word.match?(/<#(.+)>/)
+
+    name = Discord.parse_mention(word).name
+    message.gsub!(word, "\##{name}")
+  end
+
   if event.channel.parent_id == dm_category
     Irc.User(event.channel.name).send(message)
   else
